@@ -1,4 +1,4 @@
-# Status  - CTF Challenge Writeup
+# Status - CTF Challenge Writeup
 
 - **Challenge Name:** Status
 - **Category:** Web Security
@@ -22,23 +22,23 @@ At first glance, the system appears restricted and hardened (regex checks, strip
 match, _ := regexp.MatchString(`^(https?:\/\/)?ctf.uscybergames\.com`, url)
 ```
 
-* The regex **lacks an end-of-string anchor (`$`)**, so it matches *any* string that begins with `http://ctf.uscybergames.com`, regardless of the real host.
-* This opens the door to URL smuggling via usernames:
+- The regex **lacks an end-of-string anchor (`$`)**, so it matches *any* string that begins with `http://ctf.uscybergames.com`, regardless of the real host.
+
+- This opens the door to URL smuggling via usernames:
 
   ```
   http://ctf.uscybergames.com@127.0.0.1:8080/admin/exec?cmd=cat%20/flag.txt
   ```
 
-  * The regex passes since the string starts with `ctf.uscybergames.com`.
-  * But when Go parses it, `ctf.uscybergames.com` is treated as the **username**, and `127.0.0.1:8080` is the actual host.
-  * The request is routed to the internal admin interface.
-* This turns into a classic **SSRF → RCE chain**:
+  - The regex passes since the string starts with `ctf.uscybergames.com`.
+  - But when Go parses it, `ctf.uscybergames.com` is treated as the **username**, and `127.0.0.1:8080` is the actual host.
+  - The request is routed to the internal admin interface.
+
+- This turns into a classic **SSRF → RCE chain**:
 
   1. Call `/status-check?url=<poisoned-url>`.
-  2. Go’s `client.Get` follows the URL to `127.0.0.1:8080/admin/exec`.
-  3. Since the request comes from `127.0.0.1`, it passes internal IP checks.
-
-
+  1. Go’s `client.Get` follows the URL to `127.0.0.1:8080/admin/exec`.
+  1. Since the request comes from `127.0.0.1`, it passes internal IP checks.
 
 ### 2. Unrestricted shell execution in `/admin/exec`
 
@@ -46,10 +46,8 @@ match, _ := regexp.MatchString(`^(https?:\/\/)?ctf.uscybergames\.com`, url)
 cmd := exec.Command("sh", "-c", cmdStr)
 ```
 
-* No sanitization. No escaping.
-* Once you can reach `/admin/exec`, you have **arbitrary shell command execution**.
-
-
+- No sanitization. No escaping.
+- Once you can reach `/admin/exec`, you have **arbitrary shell command execution**.
 
 ### 3. Dockerfile "hardening" is mostly cosmetic
 
@@ -62,11 +60,9 @@ COPY --from=builder /build/app app
 COPY flag.txt /flag.txt
 ```
 
-* The author wipes `/bin` and leaves only `/bin/sh`.
-* This blocks common tools (`cat`, `echo`, `curl`, etc.), forcing attackers to rely solely on shell built-ins.
-* Annoying, but not a real defense.
-
-
+- The author wipes `/bin` and leaves only `/bin/sh`.
+- This blocks common tools (`cat`, `echo`, `curl`, etc.), forcing attackers to rely solely on shell built-ins.
+- Annoying, but not a real defense.
 
 ### 4. Insecure TLS settings
 
@@ -74,10 +70,8 @@ COPY flag.txt /flag.txt
 http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 ```
 
-* Disabling TLS verification globally means **any HTTPS service can be spoofed or MITM’d**.
-* This didn’t directly matter for the exploit, but it’s a dangerous practice.
-
-
+- Disabling TLS verification globally means **any HTTPS service can be spoofed or MITM’d**.
+- This didn’t directly matter for the exploit, but it’s a dangerous practice.
 
 ## Crafting the Exploit
 
@@ -85,15 +79,15 @@ With only `sh` built-ins available, we needed a **blind exfiltration strategy**.
 
 **Key insight**: `/admin/exec`’s exit code controls `/status-check`’s output:
 
-* `exit 0` → "up"
-* non-zero exit → "down"
+- `exit 0` → "up"
+- non-zero exit → "down"
 
 So we can brute-force the flag, one character at a time:
 
 1. `read flag < /flag.txt`
-2. Use a `case` statement to check if the flag starts with a guessed prefix.
-3. Exit `0` if true, `1` otherwise.
-4. Use "up"/"down" as the oracle.
+1. Use a `case` statement to check if the flag starts with a guessed prefix.
+1. Exit `0` if true, `1` otherwise.
+1. Use "up"/"down" as the oracle.
 
 ### Exploit Script
 
@@ -149,15 +143,12 @@ while True:
         break
 ```
 
-
-
 ## Defense Recommendations
 
 1. Fix regex: `^(https?:\/\/)?ctf\.uscybergames\.com$`
-2. Validate the parsed URL hostname, not just the raw string.
-3. Remove or lock down `/admin/exec`.
-4. Run containers as non-root.
-
+1. Validate the parsed URL hostname, not just the raw string.
+1. Remove or lock down `/admin/exec`.
+1. Run containers as non-root.
 
 ## Real-World Impact
 

@@ -1,4 +1,5 @@
 # Secret Message
+
 > _I've encrypted (RSA PKCS#1 v1.5) a secret message for each of my closest 10,000 friends. Too bad you're not one of them!_
 
 Attached: [`certs.tar.gz`](./Files/certs.tar.gz)
@@ -9,9 +10,9 @@ Extracting the archive revealed 10,000 X.509 certificates in PEM format (`.pem`)
 
 X.509 certificates typically contain:
 
-* Metadata: subject, issuer, validity period.
-* The public key.
-* Extensions: standard OIDs such as `2.5.29.19` (Basic Constraints) or `2.5.29.17` (Subject Alternative Name).
+- Metadata: subject, issuer, validity period.
+- The public key.
+- Extensions: standard OIDs such as `2.5.29.19` (Basic Constraints) or `2.5.29.17` (Subject Alternative Name).
 
 Extensions can also include custom OIDs, defined under an organization's namespace. These are usually opaque to parsers, just blobs of bytes.
 
@@ -29,23 +30,23 @@ The raw value of this extension was a base64-encoded blob. This was almost certa
 
 We now had:
 
-* **Public keys** (`n`, `e`) from each certificate.
-* **Ciphertexts** (from the custom OID).
+- **Public keys** (`n`, `e`) from each certificate.
+- **Ciphertexts** (from the custom OID).
 
-To decrypt, we'd need the private key. But RSA's security depends on $n = p \times q$ being hard to factor.
+To decrypt, we'd need the private key. But RSA's security depends on $n = p \\times q$ being hard to factor.
 
 With so many certificates with relatively standard exponents and moduli, the most obvious path to investigate was to look for shared factors between the moduli. We can do that by checking the Greatest Common Denominator between every pair of moduli.
 
 If two different RSA moduli share a prime, say:
 
 $$
-\begin{aligned}
-n_1 &= p \times q_1 \\
-n_2 &= p \times q_2
-\end{aligned}
+\\begin{aligned}
+n_1 &= p \\times q_1 \\
+n_2 &= p \\times q_2
+\\end{aligned}
 $$
 
-then $\gcd(n_1, n_2) = p$ reveals a factor of both.
+then $\\gcd(n_1, n_2) = p$ reveals a factor of both.
 
 ## 3. First Attempt: Brute-force GCD
 
@@ -76,12 +77,12 @@ n2: 9401285365160250955102577029815283308754290782635001772767363716792524046851
 Once we have $p$, reconstructing the private key is straightforward:
 
 $$
-\begin{aligned}
-q &= n \div p \\
-\phi &= (p - 1) \times (q - 1) \\
-d &= e^{-1} \mod \phi \\
-m &= C^d \mod n
-\end{aligned}
+\\begin{aligned}
+q &= n \\div p \\
+\\phi &= (p - 1) \\times (q - 1) \\
+d &= e^{-1} \\mod \\phi \\
+m &= C^d \\mod n
+\\end{aligned}
 $$
 
 Then apply PKCS#1 v1.5 unpadding to recover the plaintext.
@@ -180,7 +181,7 @@ FLAG: b'SVUSCG{Sh4r3d_Pr1m3s_L34k_S3cr3ts!}'
 
 ## 5. Optimized Solution: Batch GCD
 
-As an aside, instead of $O(n^2)$ comparisons, we can use the **batch GCD** algorithm with product/remainder trees. This reduces complexity to $O(n \log n)$ and finds all shared factors efficiently.
+As an aside, instead of $O(n^2)$ comparisons, we can use the **batch GCD** algorithm with product/remainder trees. This reduces complexity to $O(n \\log n)$ and finds all shared factors efficiently.
 
 ```python
 import os
@@ -398,8 +399,8 @@ SVUSCG{Sh4r3d_Pr1m3s_L34k_S3cr3ts!}
 
 ## 6. Takeaways
 
-* **Key insight:** The challenge authors hid ciphertext in a sneaky custom OID extension.
-* **Weakness exploited:** Shared primes between RSA moduli. This is a known real-world vulnerability when systems reuse primes due to poor randomness.
-* **Technique learned:** Brute-force pairwise GCD works, but batch GCD is vastly more efficient for large keysets.
+- **Key insight:** The challenge authors hid ciphertext in a sneaky custom OID extension.
+- **Weakness exploited:** Shared primes between RSA moduli. This is a known real-world vulnerability when systems reuse primes due to poor randomness.
+- **Technique learned:** Brute-force pairwise GCD works, but batch GCD is vastly more efficient for large keysets.
 
-This was a nice blend of PKI internals + RSA number theory +  algorithm design.
+This was a nice blend of PKI internals + RSA number theory + algorithm design.

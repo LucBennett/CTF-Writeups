@@ -4,7 +4,7 @@
 
 <img src="./Images/misc_pigeonsurf.jpg" title="" alt="tweet" width="453">
 
-This challenge was interesting. We are provided with an image of a tweet. The tweet has seemingly random letter casing, with complete disregard for syntax or grammar. It seems clear that the casing encodes some information. My first thought was Morse code however, after comparing the case patterns to Morse code letters I decided this was not likely. It was more likely this was simply binary. I used an OCR to transcribe the image. 
+This challenge was interesting. We are provided with an image of a tweet. The tweet has seemingly random letter casing, with complete disregard for syntax or grammar. It seems clear that the casing encodes some information. My first thought was Morse code however, after comparing the case patterns to Morse code letters I decided this was not likely. It was more likely this was simply binary. I used an OCR to transcribe the image.
 
 ```
 Social Engineering Experts

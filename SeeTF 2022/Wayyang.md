@@ -3,7 +3,7 @@
 ![chall](./Images/wayyang.PNG)
 
 [Files](./Files/pwn_wayyang.zip)
-In this challenge we are given a source file for a python program running on a server. Looking at the code we can see the user is greeted with a menu. 
+In this challenge we are given a source file for a python program running on a server. Looking at the code we can see the user is greeted with a menu.
 
 ```python
 What would you like to do today?

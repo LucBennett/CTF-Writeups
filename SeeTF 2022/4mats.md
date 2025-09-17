@@ -41,7 +41,7 @@ too!
 
 Upon entering a valid input, the program will return back to the menu.
 
-Reading over the source, the goal seems to be to 'guess' a random number chosen by the program. If we are correct, there is a system call to print the flag file. 
+Reading over the source, the goal seems to be to 'guess' a random number chosen by the program. If we are correct, there is a system call to print the flag file.
 
 ```c
 void guess_me(int fav_num){
@@ -76,9 +76,9 @@ For those that don't know `printf` is used to print a format string. Format stri
 The outline of an exploit begins to form:
 
 1. Generate a random number.
-2. Leak values from the stack until we find the number.
-3. Call guess_me and provide the leaked number.
-4. Profit???
+1. Leak values from the stack until we find the number.
+1. Call guess_me and provide the leaked number.
+1. Profit???
 
 The only issue is calling guess_me without setting a new random number. Simply calling option 1 in the menu will trigger a new random number, making our leaked one worthless.
 
@@ -92,7 +92,7 @@ mat4:
         break;
 ```
 
- Luckily there is a label (mat4) between the random number generator and the call to guess_me. In order to jump to that label we simple trigger the default switch case behavior and ensure that the variable 'set' is equal to 4. 
+Luckily there is a label (mat4) between the random number generator and the call to guess_me. In order to jump to that label we simple trigger the default switch case behavior and ensure that the variable 'set' is equal to 4.
 
 ```c
 default:
@@ -116,13 +116,13 @@ mat7:
     break;
 ```
 
- We can trigger the default switch-case behavior by providing a number other than 1 or 2. And we can ensure 'set' is equal to 4 by calling case 1 four times(each time case one is triggered 'set' is incremented).
+We can trigger the default switch-case behavior by providing a number other than 1 or 2. And we can ensure 'set' is equal to 4 by calling case 1 four times(each time case one is triggered 'set' is incremented).
 
 So the final exploit plan is as follows:
 
 1. Trigger option 1 four times.
-2. Trigger option 2, and provide a format string that requires parameters
-3. Trigger default by sending number 3, provide leaked value to guess_me
+1. Trigger option 2, and provide a format string that requires parameters
+1. Trigger default by sending number 3, provide leaked value to guess_me
 
 #### Code
 

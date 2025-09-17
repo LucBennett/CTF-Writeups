@@ -37,9 +37,9 @@ Enter command: print(dir(__file__))
 Now, we have all we need for the exploit.
 First, we call `open()`. We can use `getattr()` to access `open()` from `__builtins__` like this: `getattr(__builtins__,"op".__add__("en")`.
 
-This will return the function, so we need to pass it the parameters _path_ and _mode_. We don't know where the current working directory is relative to the root so we can just add a lot of `../`'s to keep moving towards the root. We don't have to worry about having too many since you can't move up from the root. 
+This will return the function, so we need to pass it the parameters _path_ and _mode_. We don't know where the current working directory is relative to the root so we can just add a lot of `../`'s to keep moving towards the root. We don't have to worry about having too many since you can't move up from the root.
 
-Our exploit so far is: 
+Our exploit so far is:
 
 ```python
 getattr(__builtins__,"op".__add__("en"))("../../../../../../../../../../fl".__add__("ag"),'r')

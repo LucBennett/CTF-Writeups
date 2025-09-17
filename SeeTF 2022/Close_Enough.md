@@ -26,16 +26,16 @@ utf-8 : SEE{i_love_really_secure_algorithms_b5c0b187fe309af0f4d35982fd961d7e}
 
 ### Review
 
-$n = p \times q$ where $p$ and $q$ are primes and $n$ is the public modulus.
-$C = m^e \mod n$ where $C$ is the cipher text, $m$ is the plaintext and $e$ is the public exponent.
-We need to find the value $d$ that can reverse this encryption operation. 
+$n = p \\times q$ where $p$ and $q$ are primes and $n$ is the public modulus.
+$C = m^e \\mod n$ where $C$ is the cipher text, $m$ is the plaintext and $e$ is the public exponent.
+We need to find the value $d$ that can reverse this encryption operation.
 
 $m = C^d$
 
-$d = e^{-1} \mod λ(n)$ where $λ(n)$ is the Carmichael's totient function.
-For semi-primes like $n$ it is equivalent to $(p-1) \times (q-1)$.
+$d = e^{-1} \\mod λ(n)$ where $λ(n)$ is the Carmichael's totient function.
+For semi-primes like $n$ it is equivalent to $(p-1) \\times (q-1)$.
 
-We know $n$ and $e$ since they are encoded in the public key were given. We are trying to solve for $d$, but in order to do that, we need to find $λ(n)$ which requires finding $p$ and $q$.  Usually factoring $n$ to find $p$ and $q$ is so difficult it is not worth attempting.
+We know $n$ and $e$ since they are encoded in the public key were given. We are trying to solve for $d$, but in order to do that, we need to find $λ(n)$ which requires finding $p$ and $q$. Usually factoring $n$ to find $p$ and $q$ is so difficult it is not worth attempting.
 
 ### The Vulnerability
 

@@ -3,9 +3,9 @@
 ![chall](./Images/babyreeee.PNG)
 [Files](./Files/rev_babyreeee.zip)
 For this challenge we are given a binary. Running it we are greeted with:
-```Hello! Welcome to SEETF. Please enter the flag.```
+`Hello! Welcome to SEETF. Please enter the flag.`
 Entering random characters returns:
-```Flag wrong. Try again.```
+`Flag wrong. Try again.`
 
 Simply entering random values I happened to find:
 

@@ -1,6 +1,7 @@
 # Resizr CTF Challenge Writeup
 
 ## Challenge Overview
+
 - **Name**: Resizr
 - **Category**: Web
 - **Description**: "It's like magick!"
@@ -11,9 +12,9 @@
 The challenge provides a Dockerfile and Flask application that:
 
 1. Installs ImageMagick 7.1.0-49
-2. Provides an endpoint to upload PNG images
-3. Uses ImageMagick to resize uploaded images to 50%
-4. Returns the processed image
+1. Provides an endpoint to upload PNG images
+1. Uses ImageMagick to resize uploaded images to 50%
+1. Returns the processed image
 
 Key files from the challenge:
 
@@ -29,9 +30,9 @@ The specific ImageMagick version (7.1.0-49) is vulnerable to **CVE-2022-44268** 
 The vulnerability works by:
 
 1. Crafting a malicious PNG with a `tEXt` chunk containing `profile` keyword
-2. Setting the profile value to the target file path (`/flag.txt`)
-3. When ImageMagick processes this PNG, it reads the specified file
-4. The file content gets embedded in the output PNG's metadata as hex-encoded data
+1. Setting the profile value to the target file path (`/flag.txt`)
+1. When ImageMagick processes this PNG, it reads the specified file
+1. The file content gets embedded in the output PNG's metadata as hex-encoded data
 
 ## Solution Implementation
 
@@ -101,7 +102,7 @@ with open('exploit.png', 'wb') as f:
 ### Step 2: Upload and Process
 
 1. Upload `exploit.png` to the `/upload` endpoint
-2. Download the returned processed image (`out.png`)
+1. Download the returned processed image (`out.png`)
 
 ### Step 3: Extract Flag from Metadata
 
@@ -110,6 +111,7 @@ strings out.png
 ```
 
 Output shows:
+
 ```
 HtEXtRaw profile type txt
       18
@@ -126,14 +128,15 @@ b'SVUSCG{t3st_fl4g}\n'
 ```
 
 ## Flag
+
 **SVUSCG{t3st_fl4g}**
 
 ## Key Learnings
 
 1. **Version-specific vulnerabilities**: Specific ImageMagick versions have known CVEs
-2. **PNG structure**: Understanding PNG chunk format is crucial for crafting valid exploits
-3. **Metadata extraction**: File content gets embedded as hex-encoded metadata in processed images
-4. **CVE-2022-44268**: This vulnerability allows arbitrary file reads through PNG profile manipulation
+1. **PNG structure**: Understanding PNG chunk format is crucial for crafting valid exploits
+1. **Metadata extraction**: File content gets embedded as hex-encoded metadata in processed images
+1. **CVE-2022-44268**: This vulnerability allows arbitrary file reads through PNG profile manipulation
 
 ## Mitigation
 

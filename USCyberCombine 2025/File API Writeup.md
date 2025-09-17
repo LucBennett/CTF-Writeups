@@ -1,7 +1,7 @@
 # File API - CTF Challenge Writeup
 
-**Challenge Name:** File API  
-**Category:** Web Security  
+**Challenge Name:** File API\
+**Category:** Web Security\
 **Description:** "No source provided. GLHF :)"
 
 ## Challenge Overview
@@ -139,9 +139,9 @@ print(f"FLAG: {flag}")
 This challenge demonstrated a chain of vulnerabilities:
 
 1. **Information Disclosure**: JWT `kid` parameter exposed private key location
-2. **Path Traversal**: `/api/download` endpoint allowed directory traversal (`../`)
-3. **Cryptographic Key Exposure**: Private key was accessible through path traversal
-4. **Insufficient Access Controls**: Role-based access could be bypassed with forged tokens
+1. **Path Traversal**: `/api/download` endpoint allowed directory traversal (`../`)
+1. **Cryptographic Key Exposure**: Private key was accessible through path traversal
+1. **Insufficient Access Controls**: Role-based access could be bypassed with forged tokens
 
 ## Complete Exploit Code
 
@@ -182,9 +182,9 @@ print(f"FLAG: {flag}")
 ## Lessons Learned
 
 1. **Never expose sensitive paths in JWT claims** - The `kid` parameter should not reveal filesystem paths
-2. **Implement proper path validation** - File download endpoints must prevent directory traversal
-3. **Secure key storage** - Private keys should never be accessible via web endpoints  
-4. **Defense in depth** - Multiple security layers prevent single-point-of-failure exploits
+1. **Implement proper path validation** - File download endpoints must prevent directory traversal
+1. **Secure key storage** - Private keys should never be accessible via web endpoints
+1. **Defense in depth** - Multiple security layers prevent single-point-of-failure exploits
 
 ## Mitigation Strategies
 

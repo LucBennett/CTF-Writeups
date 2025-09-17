@@ -2,7 +2,7 @@
 
 [![challenge](./Images/welcome.PNG)](./Files/Trailer_With_Challenge.mp4)
 
-This was another fun challenge. Watching the video a few times it quickly become apparent that something weird was going on. Starting at around 26 seconds there are random white dots that seem to move around the top right of the video very quickly. It seems very different than any common steganography methods I've seen. Looking closer I noticed the dots seem to appear very frequently in a square region, so much so that one might begin to draw those borders in their mind just by staring at the dots. 
+This was another fun challenge. Watching the video a few times it quickly become apparent that something weird was going on. Starting at around 26 seconds there are random white dots that seem to move around the top right of the video very quickly. It seems very different than any common steganography methods I've seen. Looking closer I noticed the dots seem to appear very frequently in a square region, so much so that one might begin to draw those borders in their mind just by staring at the dots.
 
 - White dots on a black background
 - Square
@@ -16,14 +16,14 @@ It's generally pretty difficult to work with video files in python so I started 
 ffmpeg -i Trailer_With_Challenge.mp4 -ss 00:00:26 ./images/output%04d.jpg
 ```
 
-`-i` indicates input, `-ss` is a starting point hh:mm:ss, `./images/output%04d.jpg` specifies the output location and formatting. 
+`-i` indicates input, `-ss` is a starting point hh:mm:ss, `./images/output%04d.jpg` specifies the output location and formatting.
 
 Once I have all the frames we can use Python Image Library a.k.a. PIL(actually PILLOW) to crop the images to the top right corner.
-Next, we can search for the pixels that appear white on the screen. For each white pixel we find, we put a white pixel at the same location in our output image. 
+Next, we can search for the pixels that appear white on the screen. For each white pixel we find, we put a white pixel at the same location in our output image.
 
 Note: searching for pixels that are exactly (255,255,255) produced sparse images. Instead, I had to search for pixels close to white. I did this by searching for pixels with color values greater than or equal to 255 minus an arbitrary tolerance. Here is a chart of the minimum pixel values and the images they produced.
 
-| (255,255,255)                   | (230,230,230)                    | (200,200,200)                  |
+| (255,255,255) | (230,230,230) | (200,200,200) |
 | ------------------------------- | -------------------------------- | ------------------------------ |
 | ![solution](./Images/first.png) | ![solution](./Images/second.png) | ![solution](./Images/code.jpg) |
 
