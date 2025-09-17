@@ -31,3 +31,4 @@ Below are links to my writeups from past competitions:
 
 - 🔗 [LinkedIn](https://linkedin.com/in/lucbennett)
 - 💻 [GitHub](https://github.com/LucBennett)
+- 🦊 [GitLab](https://gitlab.com/LucBennett)
