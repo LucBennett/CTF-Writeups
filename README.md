@@ -8,6 +8,7 @@ Hi, I’m **Luc Bennett** — a cybersecurity analyst, software developer, and a
 
 - 🎓 Studied **Mathematics**, **Computer Science**, and **Cognitive Systems** at the University of British Columbia.
 - 🥓 **Member of Maple Bacon** – UBC’s CTF team and one of Canada’s strongest competitors.
+- 🦅 **Member of US Cyber Team 2025** – representing the United States in international cybersecurity competitions.
 
 ## 🏆 CTF Experience
 
