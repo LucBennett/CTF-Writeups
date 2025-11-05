@@ -22,7 +22,7 @@ At first glance, the system appears restricted and hardened (regex checks, strip
 match, _ := regexp.MatchString(`^(https?:\/\/)?ctf.uscybergames\.com`, url)
 ```
 
-- The regex **lacks an end-of-string anchor (`$`)**, so it matches *any* string that begins with `http://ctf.uscybergames.com`, regardless of the real host.
+- The regex **lacks an end-of-string anchor (`$`)**, so it matches _any_ string that begins with `http://ctf.uscybergames.com`, regardless of the real host.
 
 - This opens the door to URL smuggling via usernames:
 
@@ -35,7 +35,6 @@ match, _ := regexp.MatchString(`^(https?:\/\/)?ctf.uscybergames\.com`, url)
   - The request is routed to the internal admin interface.
 
 - This turns into a classic **SSRF → RCE chain**:
-
   1. Call `/status-check?url=<poisoned-url>`.
   1. Go’s `client.Get` follows the URL to `127.0.0.1:8080/admin/exec`.
   1. Since the request comes from `127.0.0.1`, it passes internal IP checks.

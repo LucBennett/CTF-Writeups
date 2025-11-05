@@ -8,7 +8,7 @@ In this challenge, we are given access to a server running a python interface.
 Hello! Welcome to my amazing Python interpreter!
 You can run anything you want, but take not, there's a few blacklists!
 Flag is in the root directory, have fun!
-Enter command: 
+Enter command:
 ```
 
 In order to begin crafting an exploit, we should first figure out what properties and methods we have access to. We can do that with the `dir()` command.

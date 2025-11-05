@@ -1,6 +1,6 @@
 # Angry Zeyu2001
 
-![challenge](./images/Angry_Zeyu2001.PNG)
+![challenge](./Images/Angry_Zeyu2001.PNG)
 
 [Files](./Files/misc_angry_zeyu2001.zip)
 
@@ -21,4 +21,4 @@ new_img.save('test.jpg')
 ```
 
 In this case we saved the new image as `test.jpg`. Upon opening it we see:
-![Result](./images/test.jpg)
+![Result](./Images/test.jpg)

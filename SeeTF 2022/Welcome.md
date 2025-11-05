@@ -23,7 +23,7 @@ Next, we can search for the pixels that appear white on the screen. For each whi
 
 Note: searching for pixels that are exactly (255,255,255) produced sparse images. Instead, I had to search for pixels close to white. I did this by searching for pixels with color values greater than or equal to 255 minus an arbitrary tolerance. Here is a chart of the minimum pixel values and the images they produced.
 
-| (255,255,255) | (230,230,230) | (200,200,200) |
+| (255,255,255)                   | (230,230,230)                    | (200,200,200)                  |
 | ------------------------------- | -------------------------------- | ------------------------------ |
 | ![solution](./Images/first.png) | ![solution](./Images/second.png) | ![solution](./Images/code.jpg) |
 
@@ -42,7 +42,7 @@ for i in range(1,2928+1):#2928 images
     im = im.crop((1920-w, 0, 1920, w))#x,y,left,right -> top right corner
     for x in range(w):
         for y in range(w):
-            data = im.getpixel((x,y)) 
+            data = im.getpixel((x,y))
             if data[0] > tol and data[1] > tol and data[2] > tol:#pixels close to white
                 new_img.putpixel((x,y),(255,255,255))
 

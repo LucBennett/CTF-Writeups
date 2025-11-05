@@ -55,7 +55,7 @@ C = mpz(488149550774581308230828298671814951599902257222978027422440046972258586
 p = isqrt(n) #floored sqrt
 q = f_div(n,p) #floored division
 while not (p*q) == n:
-    p -=1 
+    p -=1
     q = f_div(n,p)
 
 phi = (p-1) * (q-1)

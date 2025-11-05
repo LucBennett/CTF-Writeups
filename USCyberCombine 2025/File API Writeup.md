@@ -63,7 +63,7 @@ Examining the JWT token from `/api/me` revealed crucial information:
 ```json
 {
   "sub": "ctf_b1ac62e6",
-  "role": "user", 
+  "role": "user",
   "kid": "/app/secrets/jwtRS256.key"
 }
 ```
